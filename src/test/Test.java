@@ -6,6 +6,8 @@
 package test;
 
 import csv.CSVParser;
+import data.Document;
+import preprocessing.TextPreprocessing;
 
 /**
  *
@@ -14,7 +16,13 @@ import csv.CSVParser;
 public class Test {
 
     public static void main(String[] args) {
-        CSVParser parser = new CSVParser("testdata.csv");
-        parser.printCsv();
+//        CSVParser parser = new CSVParser("testdata.csv");
+//        parser.printCsv();
+        String test = "OVo je...test    string.!@";
+        Document d = TextPreprocessing.tokenize(test);
+        for (String string : d.getBag().keySet()) {
+            System.out.println(string + " --- " + d.getBag().get(string));
+        }
+
     }
 }
