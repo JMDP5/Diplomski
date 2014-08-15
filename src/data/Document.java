@@ -5,6 +5,7 @@
  */
 package data;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -13,19 +14,21 @@ import java.util.Map;
  */
 public class Document {
 
-    private Map<String, Integer> bag;
+    private Map<String, Double> bag;
+    private Map<String, HashMap<String, Double>> bagBigram;
+
+    public Map<String, HashMap<String, Double>> getBagBigram() {
+        return bagBigram;
+    }
+
+    public void setBagBigram(Map<String, HashMap<String, Double>> bagBigram) {
+        this.bagBigram = bagBigram;
+    }
     private String category;
 
     public Document() {
     }
 
-    public Map<String, Integer> getBag() {
-        return bag;
-    }
-
-    public void setBag(Map<String, Integer> bag) {
-        this.bag = bag;
-    }
 
     public String getCategory() {
         return category;
@@ -33,6 +36,14 @@ public class Document {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public Map<String, Double> getBag() {
+        return bag;
+    }
+
+    public void setBag(Map<String, Double> bag) {
+        this.bag = bag;
     }
 
 
