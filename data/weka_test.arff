@@ -1,0 +1,16 @@
+@relation TPONTPNom
+
+@attribute Class {0,1}
+@attribute Text STRING
+
+@data
+1,Brokeback Mountain was so awesome.
+1,Brokeback Mountain was an AWESOME movie.
+1,Brokeback mountain was beautiful...
+1,I love Brokeback Mountain.
+1,man i loved brokeback mountain!
+0,Harry Potter sucks Hairy Otters, it is for the wussies who can't read real books..(
+0,I hate Harry Potter, too.....
+0,Harry Potter sucks.....
+0,This was a gift from someone who doesn't know I hate Harry Potter......
+0,In " Harry Potter and the Prisoner of Azkaban, " you see Dementors that suck the Life and Joy out of you and taking your Will to Live.

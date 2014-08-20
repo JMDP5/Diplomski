@@ -48,6 +48,9 @@ public class TextPreprocessing {
         //Zasto znak # ne izbaci??
         String patternUSER = "^@\\S+";
         String patternURL = "http(s?)://.*";
+        //Pogledaj ovo!
+//        http://stackoverflow.com/questions/3807197/regex-for-matching-full-word-starting-with-javascript
+
         return text.toLowerCase().replaceAll(patternURL, "URL").replaceAll("@\\s+", "@")
                 .replaceAll("[\\p{Punct}&&[^@%]]", " ").replaceAll("\\s+", " ")
                 .replaceAll(patternUSER, "USER");
