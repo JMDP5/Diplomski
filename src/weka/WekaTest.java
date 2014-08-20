@@ -11,5 +11,5 @@ package weka;
  * @author Aleksandar
  */
 public class WekaTest {
-    private static String fileName = "data/ToPlayOrNotToPlay.arff";
+    
 }
