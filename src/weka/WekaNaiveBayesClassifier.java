@@ -5,6 +5,7 @@
  */
 package weka;
 
+import com.sun.corba.se.impl.orbutil.DenseIntMapImpl;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileReader;
@@ -13,6 +14,9 @@ import java.io.ObjectInputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import weka.classifiers.meta.FilteredClassifier;
+import weka.core.Attribute;
+import weka.core.FastVector;
+import weka.core.Instance;
 import weka.core.Instances;
 
 /**
@@ -21,8 +25,8 @@ import weka.core.Instances;
  */
 public class WekaNaiveBayesClassifier {
 
-    private static String testFilePath = "data/smstest.txt";
-    private static String classifierPath = "NaiveBayesWeka";
+    private static String testFilePath = "data/weka_simple_test.txt";
+    private static String classifierPath = "data/NaiveBayesWeka.dat";
 
     String text;
 
@@ -60,20 +64,34 @@ public class WekaNaiveBayesClassifier {
             Object tmp = in.readObject();
             classifier = (FilteredClassifier) tmp;
             in.close();
-             System.out.println("***** Classifier model" + classifierPath + " successfully loaded!! *****");
+            System.out.println("***** Classifier model -> " + classifierPath + " successfully loaded!! *****");
         } catch (Exception e) {
-             throw new RuntimeException("Classifier - " + testFilePath + " not loaded! Please try again.");
+            throw new RuntimeException("Classifier - " + testFilePath + " not loaded! Please try again.");
         }
     }
 
     private void makeInstance() {
-        
+        FastVector classValues = new FastVector(2);
+        classValues.addElement("negative");
+        classValues.addElement("positive");
+        Attribute attribute1 = new Attribute("Class", classValues);
+        Attribute attribute2 = new Attribute("Text", (FastVector) null);
+        FastVector attrDescription = new FastVector();
+        attrDescription.addElement(attribute1);
+        attrDescription.addElement(attribute2);
+        instances = new Instances("Tweets", attrDescription, 1);
+        instances.setClassIndex(0);
+        Instance i = new Instance(2);
+        i.setValue(attribute2, text);
+        instances.add(i);
+
     }
 
     private void classify() {
         try {
             double pred = classifier.classifyInstance(instances.instance(0));
-            System.out.println("Predicted class: " + instances.classAttribute().value((int) pred));
+            System.out.println("***** Classification *****");
+            System.out.println("    Predicted class: " + instances.classAttribute().value((int) pred));
         } catch (Exception ex) {
             throw new RuntimeException("Classification went wrong -- " + ex.getMessage());
         }

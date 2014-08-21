@@ -13,6 +13,7 @@ import java.io.ObjectOutputStream;
 import java.util.Random;
 import weka.classifiers.Evaluation;
 import weka.classifiers.bayes.NaiveBayes;
+import weka.classifiers.bayes.NaiveBayesMultinomial;
 import weka.classifiers.meta.FilteredClassifier;
 import weka.core.Instances;
 import weka.core.converters.ArffLoader.ArffReader;
@@ -25,8 +26,9 @@ import weka.filters.unsupervised.attribute.StringToWordVector;
 public class WekaNaiveBayesLearner {
 
     //Da li ce ucitati ok ako je tamo String bez navodnika??
-    private static String trainingFilePath = "data/weka_test.arff";
-    private static String classifierPath = "NaiveBayesWeka";
+//    private static String trainingFilePath = "data/weka_simple_training.arff";
+    private static String trainingFilePath = "data/java-processed-tweets.arff";
+    private static String classifierPath = "data/NaiveBayesWeka.dat";
 
     // Training data will reside in this object.
     Instances trainingData;
@@ -51,15 +53,15 @@ public class WekaNaiveBayesLearner {
             System.out.println("***** Data set successfully loaded!! *****");
             br.close();
         } catch (IOException e) {
-            throw new RuntimeException("File " + fileName + " not loaded! Please try again.");
+            throw new RuntimeException("File " + fileName + " not loaded! Please try again. " + e.getMessage());
         }
     }
 
     private void evaluate() {
         try {
-            trainingData.setClassIndex(trainingData.numAttributes() - 1);
+            trainingData.setClassIndex(0);
             filter = new StringToWordVector();
-            filter.setAttributeIndices("first");
+            filter.setAttributeIndices("last");
             classifier = new FilteredClassifier();
             classifier.setFilter(filter);
             classifier.setClassifier(new NaiveBayes());
@@ -69,22 +71,23 @@ public class WekaNaiveBayesLearner {
             System.out.println(eval.toClassDetailsString());
             System.out.println("***** Evaluation on filtered (training) dataset done! *****");
         } catch (Exception ex) {
-            throw new RuntimeException("Evaluation didn't finish! Please try again!");
+            throw new RuntimeException("Evaluation didn't finish! Please try again!" + ex.getMessage());
         }
 
     }
 
     private void train() {
         try {
-            trainingData.setClassIndex(trainingData.numAttributes() - 1);
+            trainingData.setClassIndex(0);
             filter = new StringToWordVector();
-            filter.setAttributeIndices("first");
+            filter.setAttributeIndices("last");
             classifier = new FilteredClassifier();
             classifier.setFilter(filter);
-            classifier.setClassifier(new NaiveBayes());
+            classifier.setClassifier(new NaiveBayesMultinomial());
             classifier.buildClassifier(trainingData);
+            System.out.println("***** Classifier successfuly trained! *****");
         } catch (Exception ex) {
-            throw new RuntimeException("Classifier training didn't finish! Please try again!");
+            throw new RuntimeException("Classifier training didn't finish! Please try again! " + ex.getMessage());
         }
     }
 
@@ -93,7 +96,7 @@ public class WekaNaiveBayesLearner {
             ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(classifierPath));
             out.writeObject(classifier);
             out.close();
-            System.out.println("Classifier successfuly saved!");
+            System.out.println("***** Classifier successfuly saved! *****");
         } catch (IOException ex) {
             throw new RuntimeException("Classifier not saved!! Please try again!");
         }

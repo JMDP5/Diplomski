@@ -46,24 +46,24 @@ public class TextPreprocessing {
      */
     public String preprocess(String text) {
         //Zasto znak # ne izbaci??
-        String patternUSER = "^@\\S+";
-        String patternURL = "http(s?)://.*";
+        String patternUSER = "\"?@\\S+";
+        String patternURL = "http(s?)://\\S+";
         //Pogledaj ovo!
-//        http://stackoverflow.com/questions/3807197/regex-for-matching-full-word-starting-with-javascript
-
-        return text.toLowerCase().replaceAll(patternURL, "URL").replaceAll("@\\s+", "@")
-                .replaceAll("[\\p{Punct}&&[^@%]]", " ").replaceAll("\\s+", " ")
+        //http://stackoverflow.com/questions/3807197/regex-for-matching-full-word-starting-with-javascript
+        // ***** POCESIRAJ I SMAJLIJE pre ovog \p{Punct!}!!!
+        return text.toLowerCase().replaceAll(patternURL, "URL")
+                .replaceAll("[\\p{Punct}&&[^@%]]", " ").replaceAll("\\s+", " ").replaceAll("@\\s+", "@")
                 .replaceAll(patternUSER, "USER");
 
         //Dodaj posle ovoga i 1)URL -> |U|
         //      1)URL -> |U|
         //      2)Username(Tag) -> |T|
-        //      3)Negations -> NOT (columbia rad)
+        //      3)Negations -> NOT tj neku negaciju napravi(columbia rad)
         //      4)Emoticon -> their polarity(columbia)
         //      5)Reci sa vise od 3 vecana slova coooooool -> coool (columbia)
-        //      6)Remove RT
+        //      6)Stemming (Ne znam da li se isplati ovo..)
         //      7)Remove tweets with both positive :) AND negative :( emoticons
-        //      8)Stemming (Ne znam da li se isplati ovo..)
+        //      8)Collapsing QUERY_TERM
     }
 
     /**
@@ -132,8 +132,8 @@ public class TextPreprocessing {
     }
 
     /**
-     * Tokenizes the document and returns a Document Object. Na kraju dobijam
-     * Bag-of-word model za neki tekst
+     * Tokenizes the document and returns a Document Object. 
+     * In the end, we get bag-of-words model for some text.
      *
      * @param text
      * @return
@@ -147,25 +147,6 @@ public class TextPreprocessing {
         return doc;
     }
 
-    /*
-     * BIGRAM TOKENIZER
-     * Will create a BIGRAM+ ArrayList from the input string.
-     * (prev->current) tuples added
-     */
-//    public ArrayList<String> bigramTokenizer(String input) {
-//        String[] tokens = input.trim().split("\\s+");
-//        ArrayList<String> result = unigramTokenizer(input);
-//        String prev = "";
-//        String current;
-//        for (String s : tokens) {
-//            current = s;
-//            if (prev != "") {
-//                result.add(prev + " " + current);
-//            }
-//            prev = s;
-//        }
-//        return result;
-//    }
     public Set<String> getVocabulary() {
         return vocabulary;
     }
