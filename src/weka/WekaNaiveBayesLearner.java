@@ -16,6 +16,7 @@ import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
 import weka.classifiers.bayes.NaiveBayesMultinomial;
 import weka.classifiers.functions.LibSVM;
+import weka.classifiers.functions.Logistic;
 import weka.classifiers.meta.FilteredClassifier;
 import weka.core.Instances;
 import weka.core.converters.ArffLoader.ArffReader;
@@ -75,9 +76,9 @@ public class WekaNaiveBayesLearner {
 //            options[1] = "-C";
 
             filter = new StringToWordVector();
-            filter.setOptions(weka.core.Utils.splitOptions("-T"));
+//            filter.setOptions(weka.core.Utils.splitOptions("-T"));
 //            filter.setOptions(options); 
-            filter.setTokenizer(tokenizer);
+//            filter.setTokenizer(tokenizer);
             filter.setAttributeIndices("last");
 
             classifier = new FilteredClassifier();
@@ -87,10 +88,17 @@ public class WekaNaiveBayesLearner {
 ////            String[] options = weka.core.Utils.splitOptions("-K 0 -W 1");
 //            String[] options = weka.core.Utils.splitOptions("-K 1 -D 2 -W 1");
 //            clas.setOptions(options);
-            Classifier clas = new NaiveBayesMultinomial();
+
+
+//            Classifier clas = new NaiveBayesMultinomial();
+            
+            Classifier clas = new Logistic();
+            
             classifier.setClassifier(clas);
             Evaluation eval = new Evaluation(trainingData);
+            System.out.println("evaluating.....");
             eval.crossValidateModel(classifier, trainingData, 10, new Random(1));
+            System.out.println("Evaluation finished!");
             System.out.println(eval.toSummaryString());
             System.out.println(eval.toClassDetailsString());
             System.out.println("Confusion matrix: ");
