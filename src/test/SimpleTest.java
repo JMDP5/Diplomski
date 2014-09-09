@@ -5,6 +5,8 @@
  */
 package test;
 
+import preprocessing.OpenNLPProcessing;
+
 /**
  *
  * @author aleksandar
@@ -13,10 +15,12 @@ public class SimpleTest {
 
     public static void main(String[] args) {
         String text = "This is a tweet text.";
-        String[] tokens = text.split("[,]");
-        for (String string : tokens) {
-            System.out.println(string);
-        }
+        OpenNLPProcessing openNlp = new OpenNLPProcessing();
+        openNlp.POSTag(text);
+//        String[] tokenized = openNlp.tokenize(text);
+//        for (String s : tokenized) {
+//            System.out.println(s);
+//        }
     }
 
 }

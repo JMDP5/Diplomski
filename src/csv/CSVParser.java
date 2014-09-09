@@ -15,6 +15,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import preprocessing.TextPreprocessing;
+import weka.core.Utils;
 
 /**
  *
@@ -47,6 +48,8 @@ public class CSVParser {
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(separator);
                 String processed = (textPreprocessing.preprocess(parts[1]));
+
+                //
                 String[] tokenized = textPreprocessing.expandText(processed);
                 wordCount += tokenized.length;
                 for (String string : tokenized) {
@@ -54,18 +57,32 @@ public class CSVParser {
                 }
                 writer.append(parts[0].substring(1, parts[0].length() - 1));
                 writer.append(',');
-                writer.append("'");
+                
+                //Sredi ovo, ne moze ovako glupavo..
                 if (processed.charAt(processed.length() - 1) == ' ') {
-                    writer.append(processed.substring(1, processed.length() - 1));
-                } else {
-                    writer.append(processed);
-                }
-                writer.append("'");
+                    processed = processed.substring(1, processed.length() - 1);
+                } else if (processed.charAt(0) == ' ') {
+                    processed = processed.substring(1);
+                } 
+                
+                String escaped = Utils.quote(processed);
+                writer.append(escaped);
                 writer.append("\n");
+
+//                writer.append("'");
+//                if (processed.charAt(processed.length() - 1) == ' ') {
+//                    writer.append(processed.substring(1, processed.length() - 1));
+//                } else if (processed.charAt(0) == ' ') {
+//                    writer.append(processed.substring(1));
+//                } else {
+//                    writer.append(processed);
+//                }
+//                writer.append("'");
+//                writer.append("\n");
             }
 
             System.out.println("Words total: " + wordCount);
-            System.out.println("Unique words: " + uniqueWords);
+            System.out.println("Unique words: " + uniqueWords.size());
 
         } catch (FileNotFoundException ex) {
             ex.printStackTrace();

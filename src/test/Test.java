@@ -16,7 +16,7 @@ import preprocessing.TextPreprocessing;
 public class Test {
 
     public static void main(String[] args) {
-        CSVParser parser = new CSVParser("data/tweets-without-comma.csv", "data/java-processed-tweets.csv");
+        CSVParser parser = new CSVParser("data/tweets-without-comma.csv", "data/POS_TAG_procesirani.csv");
         parser.processCSV();
         
 //        String test = "@Kenichan I dived many times for the ball. Managed to save 50%  The rest go out of bounds https://www.google.com";

@@ -21,6 +21,7 @@ import sun.font.StrikeCache;
  */
 public class TextPreprocessing {
 
+    OpenNLPProcessing openNlp;
     private HashMap<String, HashMap<String, Double>> bigramCounts;
     private HashMap<String, Double> unigramCounts;
     private final String START = "<s>";
@@ -35,11 +36,12 @@ public class TextPreprocessing {
         bigramCounts = new HashMap<>();
         totalWordCount = 0;
         vocabSize = 0;
+        openNlp = new OpenNLPProcessing();
     }
 
     /**
      * Preprocess the text by removing punctuation, duplicate spaces and
-     * lowercasing it.
+     * lowercasing it, optionally it can POS tag text.
      *
      * @param text
      * @return
@@ -51,19 +53,21 @@ public class TextPreprocessing {
         //Pogledaj ovo!
         //http://stackoverflow.com/questions/3807197/regex-for-matching-full-word-starting-with-javascript
         // ***** POCESIRAJ I SMAJLIJE pre ovog \p{Punct!}!!!
-        return text.toLowerCase().replaceAll(patternURL, "URL")
-                .replaceAll("[\\p{Punct}&&[^@%]]", " ").replaceAll("\\s+", " ").replaceAll("@\\s+", "@")
+        text =  text.toLowerCase().replaceAll(patternURL, "URL")
+                .replaceAll("[\\p{Punct}&&[^@%']]", " ").replaceAll("\\s+", " ").replaceAll("@\\s+", "@")
                 .replaceAll(patternUSER, "USER");
+        return openNlp.POSTag(text);
+        
 
-        //Dodaj posle ovoga i 1)URL -> |U|
-        //      1)URL -> |U|
+        //Dodaj posle ovoga i:
+        //      1))Collapsing QUERY_TERM
         //      2)Username(Tag) -> |T|
         //      3)Negations -> NOT tj neku negaciju napravi(columbia rad)
         //      4)Emoticon -> their polarity(columbia)
         //      5)Reci sa vise od 3 vecana slova coooooool -> coool (columbia)
         //      6)Stemming (Ne znam da li se isplati ovo..)
         //      7)Remove tweets with both positive :) AND negative :( emoticons
-        //      8)Collapsing QUERY_TERM
+        //      8
     }
 
     /**
