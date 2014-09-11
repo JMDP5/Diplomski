@@ -57,28 +57,18 @@ public class CSVParser {
                 }
                 writer.append(parts[0].substring(1, parts[0].length() - 1));
                 writer.append(',');
-                
+
                 //Sredi ovo, ne moze ovako glupavo..
                 if (processed.charAt(processed.length() - 1) == ' ') {
-                    processed = processed.substring(1, processed.length() - 1);
-                } else if (processed.charAt(0) == ' ') {
+                    processed = processed.substring(0, processed.length() - 1);
+                }
+                if (processed.charAt(0) == ' ') {
                     processed = processed.substring(1);
-                } 
-                
+                }
+
                 String escaped = Utils.quote(processed);
                 writer.append(escaped);
                 writer.append("\n");
-
-//                writer.append("'");
-//                if (processed.charAt(processed.length() - 1) == ' ') {
-//                    writer.append(processed.substring(1, processed.length() - 1));
-//                } else if (processed.charAt(0) == ' ') {
-//                    writer.append(processed.substring(1));
-//                } else {
-//                    writer.append(processed);
-//                }
-//                writer.append("'");
-//                writer.append("\n");
             }
 
             System.out.println("Words total: " + wordCount);
@@ -131,5 +121,23 @@ public class CSVParser {
         }
 
         System.out.println("DONE! Whole file printed!");
+    }
+
+    public void transformCSV(String path) {
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new FileReader(file));
+            while ((line = reader.readLine()) != null) {
+
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(CSVParser.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                reader.close();
+            } catch (IOException ex) {
+                Logger.getLogger(CSVParser.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 }

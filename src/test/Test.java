@@ -16,17 +16,19 @@ import preprocessing.TextPreprocessing;
 public class Test {
 
     public static void main(String[] args) {
-        CSVParser parser = new CSVParser("data/tweets-without-comma.csv", "data/POS_TAG_procesirani.csv");
-        parser.processCSV();
-        
-//        String test = "@Kenichan I dived many times for the ball. Managed to save 50%  The rest go out of bounds https://www.google.com";
-//        String test1 = "i love@kirsten / leah / kate @escapades and mission impossible tom as well...http://shopping.pchome.com.tw/hpnb/detail.php?pid=ALG00289 ";
+//        CSVParser parser = new CSVParser("data/tweets-without-comma.csv", "data/lemma+pos+stopwords_procesirani.csv");
+//        parser.processCSV();
+
+//        String t = "llcoolj These people CANNOT know who Mick Jagger is...you ain't old  old skool maybe but c'mon! Mick Jagger has a lot more years than you!";
+        String test = "@Kenichan don't didn't I dived many times for the ball. Managed to save 50%  The rest go out of bounds https://www.google.com";
+//        String test1 = "i love@kirsten / leah / kate @escapades and mission impossible tom as well...http://shopping.pchome.com.tw/hpnb/detail.php?pid=ALG00289 #itm  ";
 //        String test2 = "@markhardy1974 Me too  #itm";
 //        String test3 = "I like the the apple the apple appke";
 //        String test4 = "This is simple string. It is simple, is it?";
 //        String test5 = "Awesome diner here @ Purdue...";
 //        
-//        TextPreprocessing tp = new TextPreprocessing();
+        TextPreprocessing tp = new TextPreprocessing();
+        System.out.println(tp.preprocess(test));
 //        Document d = tp.tokenize(test);
 ////        for (String string : d.getBag().keySet()) {
 ////            System.out.println(string + " --- " + d.getBag().get(string));

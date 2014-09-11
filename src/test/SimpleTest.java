@@ -14,9 +14,9 @@ import preprocessing.OpenNLPProcessing;
 public class SimpleTest {
 
     public static void main(String[] args) {
-        String text = "This is a tweet text.";
+        String text = "I think that these tweets messages are being crazy... right? @alex";
         OpenNLPProcessing openNlp = new OpenNLPProcessing();
-        openNlp.POSTag(text);
+        System.out.println(openNlp.POSTag(text));
 //        String[] tokenized = openNlp.tokenize(text);
 //        for (String s : tokenized) {
 //            System.out.println(s);

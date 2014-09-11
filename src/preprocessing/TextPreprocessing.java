@@ -46,28 +46,28 @@ public class TextPreprocessing {
      * @param text
      * @return
      */
+    //      Dodaj posle ovoga i:
+    //      2)Stemming i lemma 
+    //      3)Negacija(n't do not didn't ....)-> NOT_(reč) tj. neku negaciju napravi(columbia rad)
+    //      4)Emoticon -> their polarity(columbia)
+    //      6)Reci sa vise od 3 vecana slova coooooool -> coool (columbia)
+    //      8)Remove tweets with both positive :) AND negative :( emoticons
+    //      9)Eliminisi sve reci krace od 2 char.
     public String preprocess(String text) {
         //Zasto znak # ne izbaci??
         String patternUSER = "\"?@\\S+";
         String patternURL = "http(s?)://\\S+";
-        //Pogledaj ovo!
+
         //http://stackoverflow.com/questions/3807197/regex-for-matching-full-word-starting-with-javascript
         // ***** POCESIRAJ I SMAJLIJE pre ovog \p{Punct!}!!!
-        text =  text.toLowerCase().replaceAll(patternURL, "URL")
-                .replaceAll("[\\p{Punct}&&[^@%']]", " ").replaceAll("\\s+", " ").replaceAll("@\\s+", "@")
+        text = text.toLowerCase().replaceAll(patternURL, "URL")
+                .replaceAll("[\\p{Punct}&&[^@']]", " ").replaceAll("\\s+", " ").replaceAll("@\\s+", "@")
                 .replaceAll(patternUSER, "USER");
-        return openNlp.POSTag(text);
         
-
-        //Dodaj posle ovoga i:
-        //      1))Collapsing QUERY_TERM
-        //      2)Username(Tag) -> |T|
-        //      3)Negations -> NOT tj neku negaciju napravi(columbia rad)
-        //      4)Emoticon -> their polarity(columbia)
-        //      5)Reci sa vise od 3 vecana slova coooooool -> coool (columbia)
-        //      6)Stemming (Ne znam da li se isplati ovo..)
-        //      7)Remove tweets with both positive :) AND negative :( emoticons
-        //      8
+        //Skloni ovo ***********************8
+        System.out.println("After regex: " + text);
+        
+        return openNlp.POSTag(text);
     }
 
     /**
@@ -136,8 +136,8 @@ public class TextPreprocessing {
     }
 
     /**
-     * Tokenizes the document and returns a Document Object. 
-     * In the end, we get bag-of-words model for some text.
+     * Tokenizes the document and returns a Document Object. In the end, we get
+     * bag-of-words model for some text.
      *
      * @param text
      * @return
