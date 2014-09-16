@@ -1,6 +1,6 @@
 @relation Tweets
 
-@attribute Class {negative,positive}
+@attribute Class {positive,negative}
 @attribute Text STRING
 
 @data

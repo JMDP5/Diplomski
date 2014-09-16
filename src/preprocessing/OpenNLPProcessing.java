@@ -123,7 +123,7 @@ public class OpenNLPProcessing {
                     if (indexWord != null) {
                         tokens[i] = indexWord.getLemma();
                     }
-                    tokens[i] += "_" + pos.getLabel();
+//                    tokens[i] += "_" + pos.getLabel();
                 } catch (JWNLException ex) {
                     ex.printStackTrace();
                 }

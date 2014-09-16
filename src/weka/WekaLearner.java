@@ -12,6 +12,10 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.Arrays;
 import java.util.Random;
+import weka.attributeSelection.CfsSubsetEval;
+import weka.attributeSelection.ChiSquaredAttributeEval;
+import weka.attributeSelection.GreedyStepwise;
+import weka.attributeSelection.InfoGainAttributeEval;
 import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
 import weka.classifiers.bayes.NaiveBayesMultinomial;
@@ -21,6 +25,8 @@ import weka.classifiers.meta.FilteredClassifier;
 import weka.core.Instances;
 import weka.core.converters.ArffLoader.ArffReader;
 import weka.core.tokenizers.NGramTokenizer;
+import weka.filters.Filter;
+import weka.filters.supervised.attribute.AttributeSelection;
 import weka.filters.unsupervised.attribute.StringToWordVector;
 
 /**
@@ -30,23 +36,15 @@ import weka.filters.unsupervised.attribute.StringToWordVector;
 public class WekaLearner {
 
 //    private static String trainingFilePath = "data/weka_simple_training.arff";
-    private static String trainingFilePath = "data/escaped/equal.arff";
-    private static String classifierPath = "data/NaiveBayesWeka.dat";
+//    private static String trainingFilePath = "data/escaped/kaggle_bezpos.arff";
+//    private static String classifierPath = "data/NaiveBayesWeka.dat";
     // Training data will reside in this object.
     Instances trainingData;
 
     StringToWordVector filter;
     FilteredClassifier classifier;
 
-    public static void main(String[] args) {
-        WekaLearner learner = new WekaLearner();
-        learner.loadTrainingData(trainingFilePath);
-        learner.evaluate();
-        learner.train();
-        learner.saveClassifier(classifierPath);
-    }
-
-    private void loadTrainingData(String fileName) {
+    public void loadTrainingData(String fileName) {
         try {
             BufferedReader br = new BufferedReader(new FileReader(fileName));
             ArffReader arffReader = new ArffReader(br);
@@ -58,25 +56,29 @@ public class WekaLearner {
         }
     }
 
-    private void evaluate() {
+    public void evaluate() {
         try {
 
             trainingData.setClassIndex(0);
 
+            AttributeSelection attributeSelection = new AttributeSelection();
+            InfoGainAttributeEval infoGain = new InfoGainAttributeEval();
+            ChiSquaredAttributeEval chiSquare = new ChiSquaredAttributeEval();
+            
 //            Pogledaj ovo
 //            http://www.cs.waikato.ac.nz/~ml/weka/example_code/2ed/MessageClassifier.java
             NGramTokenizer tokenizer = new NGramTokenizer();
             tokenizer.setNGramMinSize(1);
-            tokenizer.setNGramMaxSize(1);
+            tokenizer.setNGramMaxSize(2);
             tokenizer.setDelimiters("\\W");
 
 //            String[] options = new String[2];
 //            options[0] = "-R <1,2,3>";
 //            options[1] = "-C";
             filter = new StringToWordVector();
-//            filter.setOptions(weka.core.Utils.splitOptions("-T"));
+            filter.setOptions(weka.core.Utils.splitOptions("-N 1 -M 2 -T"));
+//            filter.setOptions(weka.core.Utils.splitOptions(""));
 //            filter.setOptions(weka.core.Utils.splitOptions("-I -T"));
-//            filter.setOptions(options); 
             filter.setTokenizer(tokenizer);
             filter.setAttributeIndices("last");
 
@@ -112,7 +114,7 @@ public class WekaLearner {
 
     }
 
-    private void train() {
+    public void train() {
         try {
             trainingData.setClassIndex(0);
 
@@ -142,7 +144,7 @@ public class WekaLearner {
         }
     }
 
-    private void saveClassifier(String classifierPath) {
+    public void saveClassifier(String classifierPath) {
         try {
             ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(classifierPath));
             out.writeObject(classifier);

@@ -18,6 +18,7 @@ import weka.core.Attribute;
 import weka.core.FastVector;
 import weka.core.Instance;
 import weka.core.Instances;
+import weka.core.converters.ArffLoader;
 
 /**
  *
@@ -25,40 +26,28 @@ import weka.core.Instances;
  */
 public class WekaClassifier {
 
-    private static String testFilePath = "data/weka_simple_test.txt";
-    private static String classifierPath = "data/NaiveBayesWeka.dat";
+    private static String testFilePath = "data/escaped/test.arff";
 
     String text;
-
-    Instances instances;
+    String sentiment;
+    Instances testData;
 
     FilteredClassifier classifier;
 
-    public static void main(String[] args) {
-        WekaClassifier nbClassifier = new WekaClassifier();
-        nbClassifier.load();
-        nbClassifier.loadModel();
-        nbClassifier.makeInstance();
-        nbClassifier.classify();
-    }
-
-    private void load() {
+    public void load() {
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(testFilePath));
-            String line;
-            text = "";
-            while ((line = reader.readLine()) != null) {
-                text = text + " " + line;
-            }
+            BufferedReader br = new BufferedReader(new FileReader(testFilePath));
+            ArffLoader.ArffReader arffReader = new ArffLoader.ArffReader(br);
+            testData = arffReader.getData();
+            testData.setClassIndex(0);
             System.out.println("***** Data set successfully loaded!! *****");
-            reader.close();
-            System.out.println(text);
+            br.close();
         } catch (IOException e) {
-            throw new RuntimeException("File " + testFilePath + " not loaded! Please try again.");
+            throw new RuntimeException("File " + testFilePath + " not loaded! Please try again. " + e.getMessage());
         }
     }
 
-    private void loadModel() {
+    public void loadModel(String classifierPath) {
         try {
             ObjectInputStream in = new ObjectInputStream(new FileInputStream(classifierPath));
             Object tmp = in.readObject();
@@ -70,28 +59,25 @@ public class WekaClassifier {
         }
     }
 
-    private void makeInstance() {
-        FastVector classValues = new FastVector(2);
-        classValues.addElement("negative");
-        classValues.addElement("positive");
-        Attribute attribute1 = new Attribute("Class", classValues);
-        Attribute attribute2 = new Attribute("Text", (FastVector) null);
-        FastVector attrDescription = new FastVector();
-        attrDescription.addElement(attribute1);
-        attrDescription.addElement(attribute2);
-        instances = new Instances("Tweets", attrDescription, 1);
-        instances.setClassIndex(0);
-        Instance i = new Instance(2);
-        i.setValue(attribute2, text);
-        instances.add(i);
-
-    }
-
-    private void classify() {
+    public void classify() {
         try {
-            double pred = classifier.classifyInstance(instances.instance(0));
-            System.out.println("***** Classification *****");
-            System.out.println("    Predicted class: " + instances.classAttribute().value((int) pred));
+            double acc = 0;
+            for (int i = 0; i < testData.numInstances(); i++) {
+                double pred = classifier.classifyInstance(testData.instance(i));
+                System.out.println("***** Classification *****");
+                String predicted = testData.classAttribute().value((int) pred);
+                String actual = testData.instance(i).toString(0);
+                System.out.println("    Predicted class: " + predicted);
+                System.out.println("    Actual class: " + actual);
+                if (actual.equals(predicted)) {
+                    acc++;
+                } else {
+                    System.out.println("Missed Text ->  " + testData.instance(i).toString(1));
+                }
+                System.out.println("Acc: " + acc);
+            }
+            System.out.println("Overall accuracy: " + (double) acc / testData.numInstances());
+
         } catch (Exception ex) {
             throw new RuntimeException("Classification went wrong -- " + ex.getMessage());
         }
