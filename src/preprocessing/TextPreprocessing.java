@@ -60,13 +60,15 @@ public class TextPreprocessing {
 
         //http://stackoverflow.com/questions/3807197/regex-for-matching-full-word-starting-with-javascript
         // ***** POCESIRAJ I SMAJLIJE pre ovog \p{Punct!}!!!
-        text = text.toLowerCase().replaceAll(patternURL, "URL")
+        text = text.toLowerCase()
+                .replaceAll(patternURL, "URL")
                 .replaceAll("[\\p{Punct}&&[^@']]", " ").replaceAll("\\s+", " ").replaceAll("@\\s+", "@")
-                .replaceAll(patternUSER, "USER");
+                .replaceAll(patternUSER, "USER").replaceAll("\\w*n(o|'|t)t?\\b", "not")
+                .replaceAll("not\\s", "not_");
         
         //Skloni ovo ***********************8
-        System.out.println("After regex: " + text);
-        
+//        System.out.println("After regex: " + text);
+//        return text;
         return openNlp.POSTag(text);
     }
 

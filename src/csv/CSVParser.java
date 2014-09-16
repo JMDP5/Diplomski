@@ -23,6 +23,13 @@ import weka.core.Utils;
  */
 public class CSVParser {
 
+    private static final String fileHeader = "@relation Tweets\n"
+            + "\n"
+            + "@attribute Class {positive,negative}\n"
+            + "@attribute Text STRING\n"
+            + "\n"
+            + "@data\n";
+
     BufferedReader reader;
     TextPreprocessing textPreprocessing;
     String file;
@@ -45,6 +52,7 @@ public class CSVParser {
             int wordCount = 0;
             reader = new BufferedReader(new FileReader(file));
             writer = new FileWriter(outFile);
+            writer.append(fileHeader);
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(separator);
                 String processed = (textPreprocessing.preprocess(parts[1]));

@@ -337,7 +337,6 @@ new
 next
 nine
 ninety
-no
 nobody
 non
 none
@@ -346,7 +345,6 @@ noone
 no-one
 nor
 normally
-not
 nothing
 notwithstanding
 novel

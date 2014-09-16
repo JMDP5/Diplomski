@@ -29,16 +29,13 @@ import weka.filters.unsupervised.attribute.StringToWordVector;
  */
 public class WekaLearner {
 
-    //Da li ce ucitati ok ako je tamo String bez navodnika??
 //    private static String trainingFilePath = "data/weka_simple_training.arff";
-    private static String trainingFilePath = "data/escaped/java-processed-tweets-all3.arff";
+    private static String trainingFilePath = "data/escaped/equal.arff";
     private static String classifierPath = "data/NaiveBayesWeka.dat";
-
     // Training data will reside in this object.
     Instances trainingData;
 
     StringToWordVector filter;
-
     FilteredClassifier classifier;
 
     public static void main(String[] args) {
@@ -66,15 +63,16 @@ public class WekaLearner {
 
             trainingData.setClassIndex(0);
 
+//            Pogledaj ovo
+//            http://www.cs.waikato.ac.nz/~ml/weka/example_code/2ed/MessageClassifier.java
             NGramTokenizer tokenizer = new NGramTokenizer();
             tokenizer.setNGramMinSize(1);
-            tokenizer.setNGramMaxSize(3);
+            tokenizer.setNGramMaxSize(1);
             tokenizer.setDelimiters("\\W");
 
 //            String[] options = new String[2];
 //            options[0] = "-R <1,2,3>";
 //            options[1] = "-C";
-
             filter = new StringToWordVector();
 //            filter.setOptions(weka.core.Utils.splitOptions("-T"));
 //            filter.setOptions(weka.core.Utils.splitOptions("-I -T"));
@@ -86,15 +84,12 @@ public class WekaLearner {
             classifier.setFilter(filter);
 
 //            Classifier clas = new LibSVM();
-//            String[] options = weka.core.Utils.splitOptions("-K 0 -W 1");
-////            String[] options = weka.core.Utils.splitOptions("-K 1 -D 2 -W 1");
+//            String[] options = weka.core.Utils.splitOptions("-K 0 -W 1 -h 0");
+//            String[] options = weka.core.Utils.splitOptions("-K 1 -D 2 -W 1 -h 0");
 //            clas.setOptions(options);
-
-
             Classifier clas = new NaiveBayesMultinomial();
-            
+
 //            Classifier clas = new Logistic();
-            
             classifier.setClassifier(clas);
             Evaluation eval = new Evaluation(trainingData);
             System.out.println("evaluating.....");

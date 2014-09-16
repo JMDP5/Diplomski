@@ -15,8 +15,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import net.didion.jwnl.JWNL;
 import net.didion.jwnl.JWNLException;
 import net.didion.jwnl.data.IndexWord;
@@ -71,11 +69,14 @@ public class OpenNLPProcessing {
     public String[] tokenize(String text, boolean removeStopwords) {
         String[] tokens = tokenizer.tokenize(text);
 
+//        String[] tokens = text.split(" ");
+
+
         //Skloni ovo ***********************
-        System.out.println("After tokenization: ");
-        for (int i = 0; i < tokens.length ; i++) {
-            System.out.print(tokens[i] + " ");
-        }
+//        System.out.println("Afnoter tokenization: ");
+//        for (int i = 0; i < tokens.length ; i++) {
+//            System.out.print(tokens[i] + " ");
+//        }
 
         if (removeStopwords) {
             return removeStopWords(tokens);
@@ -88,13 +89,13 @@ public class OpenNLPProcessing {
         String[] tokens = tokenize(text, true);
         
         //Skloni ovo ***********************
-        System.out.println("");
-        System.out.println("After stopword removal: ");
-        for (int i = 0; i < tokens.length; i++) {
-            System.out.print(tokens[i] + " ");
-        }
-        System.out.println("");
-        System.out.println("Final: ");
+//        System.out.println("");
+//        System.out.println("After stopword removal: ");
+//        for (int i = 0; i < tokens.length; i++) {
+//            System.out.print(tokens[i] + " ");
+//        }
+//        System.out.println("");
+//        System.out.println("Final: ");
         //Obrisi ovo gore ***********************
         
         String[] tags = tagger.tag(tokens);
