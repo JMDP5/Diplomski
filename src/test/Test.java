@@ -19,30 +19,42 @@ public class Test {
 
     public static void main(String[] args) {
 
-        String treningFile = "data/escaped/kaggle_bezpos.arff";
-        String testFile = "data/escaped/test.arff";
-        boolean dotest = true;
+        String treningFile = "data/escaped/equal_lemma.arff";
+        String testFile = "data/escaped/test_lemmastop.arff";
+        String classifier = "data/NBMultinomial.dat";
+        
+        boolean dotest = false;
+        boolean doPOS = true;
+        boolean doLemma = false;
+        boolean createFile = true;
 
         if (dotest) {
-            CSVParser parser = new CSVParser("data/test_data_no_neutral.csv", testFile);
-            parser.processCSV();
+            if (createFile) {
+                CSVParser parser = new CSVParser("data/test_data_no_neutral.csv", testFile);
+                parser.processCSV(doPOS);
+            }
+
             WekaClassifier nbClassifier = new WekaClassifier();
-            nbClassifier.load();
-            nbClassifier.loadModel("data/NaiveBayesWeka.dat");
+            nbClassifier.load(testFile);
+            System.out.println("Testing with file: "+ testFile);
+            nbClassifier.loadModel(classifier);
             nbClassifier.classify();
 
         } else {
-            CSVParser parser = new CSVParser("data/kaggle_tweets-without-comma.csv", treningFile);
-            parser.processCSV();
+            if (createFile) {
+                CSVParser parser = new CSVParser("data/tweets-without-comma-equal.csv", treningFile);
+                parser.processCSV(doPOS);
 
+            }
             WekaLearner learner = new WekaLearner();
             learner.loadTrainingData(treningFile);
+            System.out.println("Training with file: "+ treningFile);
             learner.evaluate();
             learner.train();
-            learner.saveClassifier("data/NaiveBayesWeka.dat");
+            learner.saveClassifier(classifier);
         }
 //        String t = "llcoolj These people CANNOT know who Mick Jagger is...you ain't old  old skool maybe but c'mon! Mick Jagger has a lot more years than you!";
-        String test = "@Kenichan dont don't no not cannot don't didn't I dived many times for the ball. Managed to save 50%  The rest go out of bounds https://www.google.com";
+        String test = "@Kenichan :)) vise : ) dont cxd :-) don't xd :p :d no not cannot don't didn't I dived many times for the ball. Managed to save 50%  The rest go out of bounds https://www.google.com";
 //        String test1 = "i love@kirsten / leah / kate @escapades and mission impossible tom as well...http://shopping.pchome.com.tw/hpnb/detail.php?pid=ALG00289 #itm  ";
 //        String test2 = "@markhardy1974 Me too  #itm";
         String test3 = "I dont like the the apple the apple appke";
@@ -50,7 +62,7 @@ public class Test {
 //        String test5 = "Awesome diner here @ Purdue...";
 //        
 //        TextPreprocessing tp = new TextPreprocessing();
-//        System.out.println(tp.preprocess(test3));
+//        System.out.println(tp.preprocess(test,false));
 //        Document d = tp.tokenize(test);
 ////        for (String string : d.getBag().keySet()) {
 ////            System.out.println(string + " --- " + d.getBag().get(string));

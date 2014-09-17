@@ -5,7 +5,6 @@
         <group>
             <file>file:/home/aleksandar/Documents/NetBeansProjects/Diplomski/src/preprocessing/TextPreprocessing.java</file>
             <file>file:/home/aleksandar/Documents/NetBeansProjects/Diplomski/src/preprocessing/OpenNLPProcessing.java</file>
-            <file>file:/home/aleksandar/Documents/NetBeansProjects/Diplomski/src/weka/WekaLearner.java</file>
             <file>file:/home/aleksandar/Documents/NetBeansProjects/Diplomski/src/csv/CSVParser.java</file>
             <file>file:/home/aleksandar/Documents/NetBeansProjects/Diplomski/src/test/Test.java</file>
         </group>

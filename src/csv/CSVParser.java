@@ -46,7 +46,7 @@ public class CSVParser {
         this.outFile = outFile;
     }
 
-    public void processCSV() {
+    public void processCSV(boolean doPosTag) {
         try {
             Set<String> uniqueWords = new HashSet<>();
             int wordCount = 0;
@@ -55,7 +55,7 @@ public class CSVParser {
             writer.append(fileHeader);
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(separator);
-                String processed = (textPreprocessing.preprocess(parts[1]));
+                String processed = (textPreprocessing.preprocess(parts[1],doPosTag));
 
                 //
                 String[] tokenized = textPreprocessing.expandText(processed);

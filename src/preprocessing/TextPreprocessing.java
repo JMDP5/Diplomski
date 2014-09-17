@@ -53,23 +53,27 @@ public class TextPreprocessing {
     //      6)Reci sa vise od 3 vecana slova coooooool -> coool (columbia)
     //      8)Remove tweets with both positive :) AND negative :( emoticons
     //      9)Eliminisi sve reci krace od 2 char.
-    public String preprocess(String text) {
+    public String preprocess(String text, boolean doPosTag) {
         //Zasto znak # ne izbaci??
         String patternUSER = "\"?@\\S+";
         String patternURL = "http(s?)://\\S+";
 
         //http://stackoverflow.com/questions/3807197/regex-for-matching-full-word-starting-with-javascript
         // ***** POCESIRAJ I SMAJLIJE pre ovog \p{Punct!}!!!
-        text = text.toLowerCase()
+        text = text.toLowerCase();
+        text = text.replaceAll(":(\\s*)[)]+|[(]+(\\s*):|:-[)]+|:(\\s*)d|:(\\s*)p|\\s+xd\\b", "happy")
                 .replaceAll(patternURL, "URL")
-                .replaceAll("[\\p{Punct}&&[^@']]", " ").replaceAll("\\s+", " ").replaceAll("@\\s+", "@")
+                .replaceAll("[\\p{Punct}&&[^@:();']]", " ").replaceAll("\\s+", " ").replaceAll("@\\s+", "@")
                 .replaceAll(patternUSER, "USER").replaceAll("\\w*n(o|'|t)t?\\b", "not")
                 .replaceAll("not\\s", "not_");
-        
+
         //Skloni ovo ***********************8
 //        System.out.println("After regex: " + text);
-//        return text;
-        return openNlp.POSTag(text);
+        if (doPosTag) {
+            return openNlp.POSTag(text);
+        }
+        return text;
+
     }
 
     /**
@@ -145,7 +149,7 @@ public class TextPreprocessing {
      * @return
      */
     public Document tokenize(String text) {
-        String preprocessedText = preprocess(text);
+        String preprocessedText = preprocess(text,false);
         System.out.println(preprocessedText);
         String[] keywordArray = expandText(preprocessedText);
         Document doc = new Document();

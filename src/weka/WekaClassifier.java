@@ -26,7 +26,6 @@ import weka.core.converters.ArffLoader;
  */
 public class WekaClassifier {
 
-    private static String testFilePath = "data/escaped/test.arff";
 
     String text;
     String sentiment;
@@ -34,7 +33,7 @@ public class WekaClassifier {
 
     FilteredClassifier classifier;
 
-    public void load() {
+    public void load(String testFilePath) {
         try {
             BufferedReader br = new BufferedReader(new FileReader(testFilePath));
             ArffLoader.ArffReader arffReader = new ArffLoader.ArffReader(br);
@@ -55,7 +54,7 @@ public class WekaClassifier {
             in.close();
             System.out.println("***** Classifier model -> " + classifierPath + " successfully loaded!! *****");
         } catch (Exception e) {
-            throw new RuntimeException("Classifier - " + testFilePath + " not loaded! Please try again.");
+            throw new RuntimeException("Classifier - " + classifierPath + " not loaded! Please try again.");
         }
     }
 

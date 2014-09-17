@@ -86,7 +86,7 @@ public class OpenNLPProcessing {
     }
 
     public String POSTag(String text) {
-        String[] tokens = tokenize(text, true);
+        String[] tokens = tokenize(text, false);
         
         //Skloni ovo ***********************
 //        System.out.println("");

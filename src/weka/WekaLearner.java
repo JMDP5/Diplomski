@@ -76,7 +76,7 @@ public class WekaLearner {
 //            options[0] = "-R <1,2,3>";
 //            options[1] = "-C";
             filter = new StringToWordVector();
-            filter.setOptions(weka.core.Utils.splitOptions("-N 1 -M 2 -T"));
+//            filter.setOptions(weka.core.Utils.splitOptions("-N 1 -M 2 -T"));
 //            filter.setOptions(weka.core.Utils.splitOptions(""));
 //            filter.setOptions(weka.core.Utils.splitOptions("-I -T"));
             filter.setTokenizer(tokenizer);
@@ -86,8 +86,9 @@ public class WekaLearner {
             classifier.setFilter(filter);
 
 //            Classifier clas = new LibSVM();
-//            String[] options = weka.core.Utils.splitOptions("-K 0 -W 1 -h 0");
-//            String[] options = weka.core.Utils.splitOptions("-K 1 -D 2 -W 1 -h 0");
+//            String[] options = weka.core.Utils.splitOptions("-K 0");
+//            String[] options = weka.core.Utils.splitOptions("-G 0.09 -S 0 -K 2 -D 3 -R 0.0 -N 0.5 -M 40.0 -C 1.0 -E 0.0010 -P 0.1");
+//            String[] options = weka.core.Utils.splitOptions("-K 1 -D 2 -R 0.0 -N 0.5 -M 40.0 -C 1.0 -E 0.0010 -P 0.1");
 //            clas.setOptions(options);
             Classifier clas = new NaiveBayesMultinomial();
 
