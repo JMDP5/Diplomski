@@ -61,11 +61,13 @@ public class TextPreprocessing {
         //http://stackoverflow.com/questions/3807197/regex-for-matching-full-word-starting-with-javascript
         // ***** POCESIRAJ I SMAJLIJE pre ovog \p{Punct!}!!!
         text = text.toLowerCase();
-        text = text.replaceAll(":(\\s*)[)]+|[(]+(\\s*):|:-[)]+|:(\\s*)d|:(\\s*)p|\\s+xd\\b", "happy")
-                .replaceAll(patternURL, "URL")
-                .replaceAll("[\\p{Punct}&&[^@:();']]", " ").replaceAll("\\s+", " ").replaceAll("@\\s+", "@")
-                .replaceAll(patternUSER, "USER").replaceAll("\\w*n(o|'|t)t?\\b", "not")
-                .replaceAll("not\\s", "not_");
+        text = replaceSmileys(text);
+        text = text.replaceAll(patternURL, "URL")
+                .replaceAll("[\\p{Punct}&&[^@']]", " ").replaceAll("\\s+", " ").replaceAll("@\\s+", "@")
+                .replaceAll(patternUSER, "USER");
+        text = replaceNegations(text);
+        text = removeRepeatedCharacters(text);
+//                .replaceAll("not\\s", "not_");
 
         //Skloni ovo ***********************8
 //        System.out.println("After regex: " + text);
@@ -74,6 +76,36 @@ public class TextPreprocessing {
         }
         return text;
 
+    }
+
+    public String replaceSmileys(String text) {
+        String result = text;
+        result = result.replaceAll(":(\\s*)[)]", "HAPPYSMILEY");
+        result = result.replaceAll("[(]+(\\s*):", "HAPPYSMILEY");
+        result = result.replaceAll("[(]+(\\s*);", "HAPPYSMILEY");
+        result = result.replaceAll(";(\\s*)[)]", "HAPPYSMILEY");
+        result = result.replaceAll(":-[)]+", "HAPPYSMILEY");
+        result = result.replaceAll(";-[)]+", "HAPPYSMILEY");
+        result = result.replaceAll(":(\\s*)d", "HAPPYSMILEY");
+        result = result.replaceAll("\\s+xd\\b", " HAPPYSMILEY");
+        result = result.replaceAll(":(\\s*)p", "HAPPYSMILEY");
+        result = result.replaceAll(";(\\s*)d", "HAPPYSMILEY");
+        result = result.replaceAll("=[)]", "HAPPYSMILEY");
+        result = result.replaceAll("\\^_\\^", "HAPPYSMILEY");
+        result = result.replaceAll(":(\\s*)[(]", "SADSMILEY");
+        result = result.replaceAll(":-[(]", "SADSMILEY");
+        result = result.replaceAll("[)]+(\\s*):", "SADSMILEY");
+        result = result.replaceAll("[)]+(\\s*);", "SADSMILEY");
+        result = result.replaceAll("[)]+-:", "SADSMILEY");
+        return result;
+    }
+
+    public String removeRepeatedCharacters(String text) {
+        return text.replaceAll("(.)\\1{2,100}", "$1$1");
+    }
+    
+    public String replaceNegations(String text) {
+        return text.replaceAll("\\w*n(o|'|t)t?\\b", "not");
     }
 
     /**
@@ -149,7 +181,7 @@ public class TextPreprocessing {
      * @return
      */
     public Document tokenize(String text) {
-        String preprocessedText = preprocess(text,false);
+        String preprocessedText = preprocess(text, false);
         System.out.println(preprocessedText);
         String[] keywordArray = expandText(preprocessedText);
         Document doc = new Document();

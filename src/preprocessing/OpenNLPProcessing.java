@@ -86,7 +86,7 @@ public class OpenNLPProcessing {
     }
 
     public String POSTag(String text) {
-        String[] tokens = tokenize(text, false);
+        String[] tokens = tokenize(text, true);
         
         //Skloni ovo ***********************
 //        System.out.println("");
@@ -123,7 +123,7 @@ public class OpenNLPProcessing {
                     if (indexWord != null) {
                         tokens[i] = indexWord.getLemma();
                     }
-//                    tokens[i] += "_" + pos.getLabel();
+                    tokens[i] += "_" + pos.getLabel();
                 } catch (JWNLException ex) {
                     ex.printStackTrace();
                 }

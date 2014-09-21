@@ -19,14 +19,14 @@ public class Test {
 
     public static void main(String[] args) {
 
-        String treningFile = "data/escaped/equal_lemma.arff";
-        String testFile = "data/escaped/test_lemmastop.arff";
+        String treningFile = "data/escaped/preprocesirani.arff";
+        String testFile = "data/escaped/test_preproceirani.arff";
         String classifier = "data/NBMultinomial.dat";
         
-        boolean dotest = false;
-        boolean doPOS = true;
+        boolean dotest = true;
+        boolean doPOS = false;
         boolean doLemma = false;
-        boolean createFile = true;
+        boolean createFile = false;
 
         if (dotest) {
             if (createFile) {
@@ -53,16 +53,21 @@ public class Test {
             learner.train();
             learner.saveClassifier(classifier);
         }
-//        String t = "llcoolj These people CANNOT know who Mick Jagger is...you ain't old  old skool maybe but c'mon! Mick Jagger has a lot more years than you!";
-        String test = "@Kenichan :)) vise : ) dont cxd :-) don't xd :p :d no not cannot don't didn't I dived many times for the ball. Managed to save 50%  The rest go out of bounds https://www.google.com";
-//        String test1 = "i love@kirsten / leah / kate @escapades and mission impossible tom as well...http://shopping.pchome.com.tw/hpnb/detail.php?pid=ALG00289 #itm  ";
-//        String test2 = "@markhardy1974 Me too  #itm";
-        String test3 = "I dont like the the apple the apple appke";
-//        String test4 = "This is simple string. It is simple, is it?";
-//        String test5 = "Awesome diner here @ Purdue...";
-//        
+////        String t = "llcoolj These people CANNOT know who Mick Jagger is...you ain't old  old skool maybe but c'mon! Mick Jagger has a lot more years than you!";
+//        String test = "@Kenichan :)) vise : ) doont cxd :-) don't xd :p :d no not cannot don't didn't I dived many times for the ball. Managed to save 50%  The rest go out of bounds https://www.google.com";
+////        String test = "@Kenichan i found tickets right now...and yeah, booked hotel for next week using  https://www.booking.com, it is great!";
+////        String test1 = "i love@kirsten / leah / kate @escapades and mission impossible tom as well...http://shopping.pchome.com.tw/hpnb/detail.php?pid=ALG00289 #itm  ";
+////        String test2 = "@markhardy1974 Me too  #itm"
+//        String test3 = "I don't like apples #feelingsick";
+//        String smileys = "1 :-))) 2 : ) cxd 3 ( : 4 xd 5 (; 6 )))-: 7 ) : 8 ) ;";
+//        String negations = "1 dont 2 don't 3 cannot 4 wont 5 nooooooo 6 notaaaani";
+////        String test4 = "This is simple string. It is simple, is it?";
+////        String test5 = "Awesome diner here @ Purdue...";
+//
 //        TextPreprocessing tp = new TextPreprocessing();
-//        System.out.println(tp.preprocess(test,false));
+////        System.out.println("");
+//        System.out.println("Original message: " + test);
+//        System.out.println("Preprocessed :    " + tp.preprocess(test, false));
 //        Document d = tp.tokenize(test);
 ////        for (String string : d.getBag().keySet()) {
 ////            System.out.println(string + " --- " + d.getBag().get(string));
