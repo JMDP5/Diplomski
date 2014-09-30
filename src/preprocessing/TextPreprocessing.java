@@ -62,6 +62,8 @@ public class TextPreprocessing {
         // ***** POCESIRAJ I SMAJLIJE pre ovog \p{Punct!}!!!
         text = text.toLowerCase();
         text = replaceSmileys(text);
+        
+//         text = text.replaceAll("[.,]", " ").replaceAll("\\s+", " ");
         text = text.replaceAll(patternURL, "URL")
                 .replaceAll("[\\p{Punct}&&[^@']]", " ").replaceAll("\\s+", " ").replaceAll("@\\s+", "@")
                 .replaceAll(patternUSER, "USER");
@@ -80,16 +82,16 @@ public class TextPreprocessing {
 
     public String replaceSmileys(String text) {
         String result = text;
-        result = result.replaceAll(":(\\s*)[)]", "HAPPYSMILEY");
+        result = result.replaceAll(":(\\s*)[)]+", "HAPPYSMILEY");
         result = result.replaceAll("[(]+(\\s*):", "HAPPYSMILEY");
         result = result.replaceAll("[(]+(\\s*);", "HAPPYSMILEY");
         result = result.replaceAll(";(\\s*)[)]", "HAPPYSMILEY");
         result = result.replaceAll(":-[)]+", "HAPPYSMILEY");
         result = result.replaceAll(";-[)]+", "HAPPYSMILEY");
-        result = result.replaceAll(":(\\s*)d", "HAPPYSMILEY");
+        result = result.replaceAll(":(\\s*)d\\b", "HAPPYSMILEY");
         result = result.replaceAll("\\s+xd\\b", " HAPPYSMILEY");
-        result = result.replaceAll(":(\\s*)p", "HAPPYSMILEY");
-        result = result.replaceAll(";(\\s*)d", "HAPPYSMILEY");
+        result = result.replaceAll(":(\\s*)p\\b", "HAPPYSMILEY");
+        result = result.replaceAll(";(\\s*)d\\b", "HAPPYSMILEY");
         result = result.replaceAll("=[)]", "HAPPYSMILEY");
         result = result.replaceAll("\\^_\\^", "HAPPYSMILEY");
         result = result.replaceAll(":(\\s*)[(]", "SADSMILEY");
@@ -105,7 +107,13 @@ public class TextPreprocessing {
     }
     
     public String replaceNegations(String text) {
-        return text.replaceAll("\\w*n(o|'|t)t?\\b", "not");
+        text = text.replaceAll("dont\\b", "don't");
+        text = text.replaceAll("wont\\b", "won't");
+        text = text.replaceAll("didnt\\b", "didn't");
+        text = text.replaceAll("cant\\b", "can't");
+        text = text.replaceAll("arent\\b", "aren't");
+        text = text.replaceAll("no\\b", "not");
+        return text.replaceAll("\\w*n(o|')t\\b", "not");
     }
 
     /**

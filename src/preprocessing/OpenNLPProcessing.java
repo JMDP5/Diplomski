@@ -70,14 +70,11 @@ public class OpenNLPProcessing {
         String[] tokens = tokenizer.tokenize(text);
 
 //        String[] tokens = text.split(" ");
-
-
         //Skloni ovo ***********************
 //        System.out.println("Afnoter tokenization: ");
 //        for (int i = 0; i < tokens.length ; i++) {
 //            System.out.print(tokens[i] + " ");
 //        }
-
         if (removeStopwords) {
             return removeStopWords(tokens);
         }
@@ -87,7 +84,7 @@ public class OpenNLPProcessing {
 
     public String POSTag(String text) {
         String[] tokens = tokenize(text, true);
-        
+
         //Skloni ovo ***********************
 //        System.out.println("");
 //        System.out.println("After stopword removal: ");
@@ -97,38 +94,39 @@ public class OpenNLPProcessing {
 //        System.out.println("");
 //        System.out.println("Final: ");
         //Obrisi ovo gore ***********************
-        
-        String[] tags = tagger.tag(tokens);
-        for (int i = 0; i < tags.length; i++) {
+        if (true) {
+            String[] tags = tagger.tag(tokens);
+            for (int i = 0; i < tags.length; i++) {
 
-            POS pos = null;
+                POS pos = null;
 
-            //care only about verbs,nouns,adjectives and adverbs.
-            if (tags[i].startsWith("VB")) {
-                pos = POS.VERB;
-            } else if (tags[i].startsWith("NN")) {
-                pos = POS.NOUN;
-            } else if (tags[i].startsWith("JJ")) {
-                pos = POS.ADJECTIVE;
-            } else if (tags[i].startsWith("RB")) {
-                pos = POS.ADVERB;
-            }
+                //care only about verbs,nouns,adjectives and adverbs.
+                if (tags[i].startsWith("VB")) {
+                    pos = POS.VERB;
+                } else if (tags[i].startsWith("NN")) {
+                    pos = POS.NOUN;
+                } else if (tags[i].startsWith("JJ")) {
+                    pos = POS.ADJECTIVE;
+                } else if (tags[i].startsWith("RB")) {
+                    pos = POS.ADVERB;
+                }
 
-            if (pos != null) {
-                try {
+                if (pos != null) {
+                    try {
 //                    System.out.println(tokens[i]);
 //                    System.out.println(pos.getLabel());
-                    Dictionary dict = Dictionary.getInstance();
-                    IndexWord indexWord = dict.lookupIndexWord(pos, tokens[i]);
-                    if (indexWord != null) {
-                        tokens[i] = indexWord.getLemma();
-                    }
+                        Dictionary dict = Dictionary.getInstance();
+                        IndexWord indexWord = dict.lookupIndexWord(pos, tokens[i]);
+                        if (indexWord != null) {
+                            tokens[i] = indexWord.getLemma();
+                        }
                     tokens[i] += "_" + pos.getLabel();
-                } catch (JWNLException ex) {
-                    ex.printStackTrace();
+                    } catch (JWNLException ex) {
+                        ex.printStackTrace();
+                    }
                 }
-            }
 
+            }
         }
 //        System.out.println("*******Resut **********");
 //        for (int i = 0; i < tokens.length; i++) {

@@ -18,40 +18,49 @@ import weka.WekaLearner;
 public class Test {
 
     public static void main(String[] args) {
+        String[] trainingFiles = new String[8];
 
-        String treningFile = "data/escaped/preprocesirani.arff";
+        for (int i = 1; i < trainingFiles.length; i++) {
+            trainingFiles[i] = "data/escaped/C" + i + ".arff";
+            System.out.println(trainingFiles[i]);
+        }
+
+        String treningFile = "data/escaped/";
         String testFile = "data/escaped/test_preproceirani.arff";
         String classifier = "data/NBMultinomial.dat";
-        
-        boolean dotest = true;
-        boolean doPOS = false;
-        boolean doLemma = false;
-        boolean createFile = false;
+        for (int i = 3; i < trainingFiles.length; i++) {
 
-        if (dotest) {
-            if (createFile) {
-                CSVParser parser = new CSVParser("data/test_data_no_neutral.csv", testFile);
-                parser.processCSV(doPOS);
+            boolean dotest = false;
+            boolean doPOS = false;
+            boolean doStop = false;
+            boolean createFile = false;
+
+            if (dotest) {
+                if (createFile) {
+                    CSVParser parser = new CSVParser("data/test_data_no_neutral.csv", testFile);
+                    parser.processCSV(doPOS);
+                }
+
+                WekaClassifier nbClassifier = new WekaClassifier();
+                nbClassifier.load(testFile);
+                System.out.println("Testing with file: " + testFile);
+                nbClassifier.loadModel(classifier);
+                nbClassifier.classify();
+
+            } else {
+                if (createFile) {
+                    CSVParser parser = new CSVParser("data/tweets-without-comma-equal.csv", treningFile);
+                    parser.processCSV(doPOS);
+                    return;
+                }
+
+                WekaLearner learner = new WekaLearner();
+                learner.loadTrainingData(trainingFiles[i]);
+                System.out.println("Training with file: " + trainingFiles[i]);
+                learner.evaluate();
+                learner.train();
+                learner.saveClassifier(classifier);
             }
-
-            WekaClassifier nbClassifier = new WekaClassifier();
-            nbClassifier.load(testFile);
-            System.out.println("Testing with file: "+ testFile);
-            nbClassifier.loadModel(classifier);
-            nbClassifier.classify();
-
-        } else {
-            if (createFile) {
-                CSVParser parser = new CSVParser("data/tweets-without-comma-equal.csv", treningFile);
-                parser.processCSV(doPOS);
-
-            }
-            WekaLearner learner = new WekaLearner();
-            learner.loadTrainingData(treningFile);
-            System.out.println("Training with file: "+ treningFile);
-            learner.evaluate();
-            learner.train();
-            learner.saveClassifier(classifier);
         }
 ////        String t = "llcoolj These people CANNOT know who Mick Jagger is...you ain't old  old skool maybe but c'mon! Mick Jagger has a lot more years than you!";
 //        String test = "@Kenichan :)) vise : ) doont cxd :-) don't xd :p :d no not cannot don't didn't I dived many times for the ball. Managed to save 50%  The rest go out of bounds https://www.google.com";

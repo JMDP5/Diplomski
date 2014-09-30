@@ -14,6 +14,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import preprocessing.OpenNLPProcessing;
 import preprocessing.TextPreprocessing;
 import weka.core.Utils;
 
@@ -32,6 +33,7 @@ public class CSVParser {
 
     BufferedReader reader;
     TextPreprocessing textPreprocessing;
+    OpenNLPProcessing openNlp;
     String file;
     String outFile;
     String line;
@@ -42,7 +44,8 @@ public class CSVParser {
         this.file = f;
         this.line = "";
         this.separator = ",";
-        textPreprocessing = new TextPreprocessing();
+        this.textPreprocessing = new TextPreprocessing();
+        this.openNlp = new OpenNLPProcessing();
         this.outFile = outFile;
     }
 
@@ -55,10 +58,10 @@ public class CSVParser {
             writer.append(fileHeader);
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(separator);
-                String processed = (textPreprocessing.preprocess(parts[1],doPosTag));
+                String processed = (textPreprocessing.preprocess(parts[1], doPosTag));
 
                 //
-                String[] tokenized = textPreprocessing.expandText(processed);
+                String[] tokenized = openNlp.tokenize(processed, false);
                 wordCount += tokenized.length;
                 for (String string : tokenized) {
                     uniqueWords.add(string);

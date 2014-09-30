@@ -42,11 +42,12 @@ public class WekaLearner {
 //    private static String trainingFilePath = "data/escaped/kaggle_bezpos.arff";
 //    private static String classifierPath = "data/NaiveBayesWeka.dat";
     // Training data will reside in this object.
-    Instances trainingData;
 
     StringToWordVector filter;
     FilteredClassifier classifier;
-
+       
+    Instances trainingData;
+    
     public void loadTrainingData(String fileName) {
         try {
             BufferedReader br = new BufferedReader(new FileReader(fileName));
@@ -68,15 +69,17 @@ public class WekaLearner {
             InfoGainAttributeEval infoGain = new InfoGainAttributeEval();
             ChiSquaredAttributeEval chiSquare = new ChiSquaredAttributeEval();
             Ranker search = new Ranker();
-            search.setNumToSelect(1350);
-            attributeSelection.setEvaluator(infoGain);
+            search.setNumToSelect(800);
+            attributeSelection.setEvaluator(chiSquare);
             attributeSelection.setSearch(search);
 
 //            Pogledaj ovo
 //            http://www.cs.waikato.ac.nz/~ml/weka/example_code/2ed/MessageClassifier.java
+           
+            
             NGramTokenizer tokenizer = new NGramTokenizer();
             tokenizer.setNGramMinSize(1);
-            tokenizer.setNGramMaxSize(2);
+            tokenizer.setNGramMaxSize(1);
             tokenizer.setDelimiters("\\W");
 
 //            String[] options = new String[2];
@@ -103,15 +106,15 @@ public class WekaLearner {
             saver.writeBatch();
 
             classifier = new FilteredClassifier();
-            filter.setInputFormat(newData);
+            filter.setInputFormat(newData); //Ovde ide newData
             classifier.setFilter(filter);
 
-//            Classifier clas = new LibSVM();
+            Classifier clas = new LibSVM();
 //            String[] options = weka.core.Utils.splitOptions("-K 0");
-//            String[] options = weka.core.Utils.splitOptions("-G 0.08 -S 0 -K 2 -D 3 -R 0.0 -N 0.5 -M 40.0 -C 0.7 -E 0.0010 -P 0.1");
-//            String[] options = weka.core.Utils.splitOptions("-K 1 -D 2 -R 0.0 -N 0.5 -M 40.0 -C 1.0 -E 0.0010 -P 0.1");
-//            clas.setOptions(options);
-            Classifier clas = new NaiveBayesMultinomial();
+            String[] options = weka.core.Utils.splitOptions("-G 0.08 -S 0 -K 2 -D 3 -R 0.0 -N 0.5 -M 40.0 -C 0.7 -E 0.0010 -P 0.1");
+//            String[] options = weka.core.Utils.splitOptions("-K 1 -D 2");
+            clas.setOptions(options);
+//            Classifier clas = new NaiveBayesMultinomial();
 
 //            Classifier clas = new Logistic();
             classifier.setClassifier(clas);
@@ -152,17 +155,13 @@ public class WekaLearner {
             tokenizer.setNGramMinSize(1);
             tokenizer.setNGramMaxSize(2);
             tokenizer.setDelimiters("\\W");
-            
-            
-            
 
             filter = new StringToWordVector();
-              filter.setTokenizer(tokenizer);
-              filter.setInputFormat(trainingData);
+            filter.setTokenizer(tokenizer);
+            filter.setInputFormat(trainingData);
             filter.setAttributeIndices("last");
-            
+
             Instances filtered = Filter.useFilter(trainingData, filter);
-            
 
             attributeSelection.setInputFormat(filtered);
             Instances newData = Filter.useFilter(filtered, attributeSelection);
